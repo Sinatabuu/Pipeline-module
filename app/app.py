@@ -1,13 +1,11 @@
 import streamlit as st
 
-st.set_page_config(page_title="Tukuza Bible App", page_icon="📖")
+st.set_page_config(page_title="Pipeline Bible App", page_icon="📖")
 
-st.title("📖 Welcome to the Tukuza Yesu Bible App")
-st.write("This is a test to verify Streamlit is running correctly.")
+st.title("📖 Welcome to the Pipeline Module")
+st.write("If you see this message, your Streamlit app is working!")
 
-# Test input
-verse = st.text_input("Type a Bible verse:")
+verse = st.text_input("Type a Bible verse")
 
 if st.button("Submit"):
-    st.success(f"You entered: {verse}")
-# Streamlit app entry point
+    st.success(f"You typed: {verse}")
