@@ -1,1 +1,28 @@
+# Ignore Python stuff
+__pycache__/
+*.py[cod]
+*.pkl
+
+# Ignore virtual environments
+venv/
+env/
+
+# Ignore Streamlit and system files
+.streamlit/
+.DS_Store
+*.log
+
+# Ignore Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore Windows/OneDrive/Temp
+Thumbs.db
+desktop.ini
+~$*
+
+# Ignore VS Code settings
+.vscode/
+
+# Ignore Git system files
+.git/
 
