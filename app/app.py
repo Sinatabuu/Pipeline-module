@@ -1,4 +1,7 @@
 import streamlit as st
+import openai
+import os
+import joblib
 
 # ---------------------------
 # App Config
@@ -16,20 +19,11 @@ st.title("Tukuza Yesu AI Toolkit")
 # ---------------------------
 # 1. BibleBot
 # ---------------------------
-# ---------------------------
-# 1. BibleBot
-# ---------------------------
-elif tool == "📖 BibleBot":
-    import openai
-    import os
-
+if tool == "📖 BibleBot":
     st.subheader("Ask the BibleBot 📜")
     st.caption("🙋 Ask a question related to the Bible or Christian life.")
 
-    # User input
     question = st.text_input("What would you like to know?")
-
-    # OpenAI API Key (uses Streamlit secrets or local .env)
     openai.api_key = st.secrets["OPENAI_API_KEY"] if "OPENAI_API_KEY" in st.secrets else os.getenv("OPENAI_API_KEY")
 
     if st.button("Get Answer") and question.strip():
@@ -48,27 +42,20 @@ elif tool == "📖 BibleBot":
             except Exception as e:
                 st.error(f"⚠️ Error: {e}")
 
-
 # ---------------------------
 # 2. Verse Classifier
 # ---------------------------
 elif tool == "🔖 Verse Classifier":
-    import joblib
-    import os
-
     st.subheader("Classify a Bible Verse")
 
-    # Load model and vectorizer
     model_path = os.path.join("models", "model.pkl")
     vectorizer_path = os.path.join("models", "vectorizer.pkl")
 
     model = joblib.load(model_path)
     vectorizer = joblib.load(vectorizer_path)
 
-    # Show topics for transparency
     st.write("🧠 Model can detect these topics:", model.classes_)
 
-    # Input
     verse = st.text_area("Paste a Bible verse here:")
     if st.button("Classify"):
         if verse.strip() == "":
@@ -83,7 +70,5 @@ elif tool == "🔖 Verse Classifier":
 # ---------------------------
 elif tool == "🌅 Daily Verse":
     st.subheader("🌞 Your Daily Verse")
-
-    # Placeholder — can be loaded from file or API later
     verse = "“This is the day that the Lord has made; let us rejoice and be glad in it.” – Psalm 118:24"
     st.success(verse)
