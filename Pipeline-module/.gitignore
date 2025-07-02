@@ -1,28 +1,18 @@
-# Ignore Python stuff
+# Ignore Python cache and virtual env
 __pycache__/
-*.py[cod]
-*.pkl
-
-# Ignore virtual environments
+*.pyc
+*.pyo
+*.pyd
 venv/
 env/
-
-# Ignore Streamlit and system files
-.streamlit/
-.DS_Store
-*.log
 
 # Ignore Jupyter notebook checkpoints
 .ipynb_checkpoints/
 
-# Ignore Windows/OneDrive/Temp
-Thumbs.db
-desktop.ini
-~$*
+# Ignore local config
+*.log
+*.tmp
 
-# Ignore VS Code settings
-.vscode/
-
-# Ignore Git system files
-.git/
-
+# Don't ignore models!
+# models/
+# *.pkl
