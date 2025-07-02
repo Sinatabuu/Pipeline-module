@@ -27,11 +27,30 @@ if tool == "📖 BibleBot":
 # 2. Verse Classifier
 # ---------------------------
 elif tool == "🔖 Verse Classifier":
+    import joblib
+    import os
+
     st.subheader("Classify a Bible Verse")
+
+    # Load model and vectorizer
+    model_path = os.path.join("models", "model.pkl")
+    vectorizer_path = os.path.join("models", "vectorizer.pkl")
+
+    model = joblib.load(model_path)
+    vectorizer = joblib.load(vectorizer_path)
+
+    # Show topics for transparency
+    st.write("🧠 Model can detect these topics:", model.classes_)
+
+    # Input
     verse = st.text_area("Paste a Bible verse here:")
     if st.button("Classify"):
-        # TEMPORARY LOGIC — replace with ML model later
-        st.info("🧠 Detected Topic: *Encouragement*")
+        if verse.strip() == "":
+            st.warning("Please enter a verse.")
+        else:
+            X = vectorizer.transform([verse])
+            prediction = model.predict(X)[0]
+            st.success(f"🧠 Detected Topic: **{prediction}**")
 
 # ---------------------------
 # 3. Daily Verse
