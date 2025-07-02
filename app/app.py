@@ -16,12 +16,38 @@ st.title("Tukuza Yesu AI Toolkit")
 # ---------------------------
 # 1. BibleBot
 # ---------------------------
-if tool == "📖 BibleBot":
+# ---------------------------
+# 1. BibleBot
+# ---------------------------
+elif tool == "📖 BibleBot":
+    import openai
+    import os
+
     st.subheader("Ask the BibleBot 📜")
+    st.caption("🙋 Ask a question related to the Bible or Christian life.")
+
+    # User input
     question = st.text_input("What would you like to know?")
-    if st.button("Get Answer"):
-        # TEMPORARY RESPONSE — replace with chatbot model later
-        st.success("🙌 The Bible says: 'Fear not, for I am with you' – Isaiah 41:10")
+
+    # OpenAI API Key (uses Streamlit secrets or local .env)
+    openai.api_key = st.secrets["OPENAI_API_KEY"] if "OPENAI_API_KEY" in st.secrets else os.getenv("OPENAI_API_KEY")
+
+    if st.button("Get Answer") and question.strip():
+        with st.spinner("Searching Scripture..."):
+            try:
+                response = openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo",
+                    messages=[
+                        {"role": "system", "content": "You are a helpful Christian assistant. Answer with love, wisdom, and Scripture references."},
+                        {"role": "user", "content": question}
+                    ],
+                    temperature=0.6
+                )
+                answer = response.choices[0].message.content
+                st.success(answer)
+            except Exception as e:
+                st.error(f"⚠️ Error: {e}")
+
 
 # ---------------------------
 # 2. Verse Classifier
