@@ -1,7 +1,13 @@
+streamlit
+openai==1.3.9
+requests
+speechrecognition
+pydub
+av
+streamlit-webrtc
+langdetect
+deep-translator
+httpx==0.24.1
 pandas
 scikit-learn
-numpy
-streamlit
-requests
-nltk
 joblib
