@@ -19,10 +19,8 @@ st.title("Tukuza Yesu AI Toolkit")
 # ---------------------------
 # 1. BibleBot
 # ---------------------------
-elif tool == "📖 BibleBot":
-    import openai
-    import os
-
+if tool == "📖 BibleBot":
+    
     client = openai.OpenAI(api_key=st.secrets["OPENAI_API_KEY"] if "OPENAI_API_KEY" in st.secrets else os.getenv("OPENAI_API_KEY"))
 
     st.subheader("Ask the BibleBot 📜")
