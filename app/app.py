@@ -12,7 +12,12 @@ st.set_page_config(page_title="Tukuza Yesu AI Toolkit", page_icon="📖", layout
 # Sidebar Navigation
 # ---------------------------
 st.sidebar.title("Tukuza Yesu")
-tool = st.sidebar.radio("🛠 Choose a Tool:", ["📖 BibleBot", "🔖 Verse Classifier", "🌅 Daily Verse"])
+tool = st.sidebar.radio("🛠 Choose a Tool:", [
+    "📖 BibleBot", 
+    "🔖 Verse Classifier", 
+    "🌅 Daily Verse", 
+    "🧪 Spiritual Gifts Assessment"
+])
 
 st.title("Tukuza Yesu AI Toolkit")
 
@@ -81,3 +86,53 @@ elif tool == "🌅 Daily Verse":
     st.subheader("🌞 Your Daily Verse")
     verse = "“This is the day that the Lord has made; let us rejoice and be glad in it.” – Psalm 118:24"
     st.success(verse)
+
+# ---------------------------
+# 4. Spiritual Gifts Assessment
+# ---------------------------
+elif tool == "🧪 Spiritual Gifts Assessment":
+    import joblib
+    import os
+
+    # Load model
+    model_path = os.path.join("models", "gift_model.pkl")
+    model = joblib.load(model_path)
+
+    # Questions
+    questions = [ ... ]  # ⬅️ use full list of 30 real questions here
+
+    gift_to_fivefold = {
+        "Teaching": "Teacher",
+        "Prophecy": "Prophet",
+        "Evangelism": "Evangelist",
+        "Service": "Pastor",
+        "Giving": "Pastor",
+        "Mercy": "Pastor",
+        "Leadership": "Apostle"
+    }
+
+    st.subheader("🧪 Spiritual Gifts Assessment")
+    st.caption("Answer each question on a scale from 1 (Strongly Disagree) to 5 (Strongly Agree).")
+
+    with st.form("gift_assessment_form"):
+        responses = [st.slider(f"{i+1}. {q}", 1, 5, 3) for i, q in enumerate(questions)]
+        submitted = st.form_submit_button("🎯 Discover My Spiritual Gift")
+
+    if submitted:
+        prediction = model.predict([responses])[0]
+        role = gift_to_fivefold.get(prediction, "Undetermined")
+
+        st.success(f"🧠 Your dominant spiritual gift is: **{prediction}**")
+        st.info(f"👑 Fivefold Ministry Role: **{role}**")
+        st.markdown("✝️ *'So Christ himself gave the apostles, the prophets, the evangelists, the pastors and teachers...' – Eph 4:11*")
+
+        # Download button
+        summary_text = f"""
+==============================
+🎁 Spiritual Gifts Assessment
+==============================
+Dominant Gift: {prediction}
+Fivefold Role: {role}
+Thank you for using the Tukuza Yesu Toolkit!
+"""
+        st.download_button("📥 Download My Result", data=summary_text, file_name="gift_result.txt", mime="text/plain")
