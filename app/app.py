@@ -93,15 +93,41 @@ elif tool == "🌅 Daily Verse":
 # 4. Spiritual Gifts Assessment
 # ---------------------------
 elif tool == "🧪 Spiritual Gifts Assessment":
-    import joblib
-    import os
-
-    # Load model
     model_path = os.path.join("models", "gift_model.pkl")
     model = joblib.load(model_path)
 
-    # Questions
-    questions = [ ... ]  # ⬅️ use full list of 30 real questions here
+    questions = [
+        "I enjoy explaining Bible truths in a clear, structured way.",
+        "I naturally take the lead when organizing ministry activities.",
+        "I feel driven to share the gospel with strangers.",
+        "I often sense spiritual warnings or encouragements for others.",
+        "I easily feel compassion for people who are suffering.",
+        "I enjoy giving resources to help others, even when it costs me.",
+        "I’m happiest when working behind the scenes to help others.",
+        "People often ask for my advice in complex spiritual matters.",
+        "I enjoy studying and understanding deep biblical concepts.",
+        "I trust God even in situations where others worry.",
+        "I can often sense when something is spiritually wrong or deceptive.",
+        "I enjoy hosting people and making them feel welcome.",
+        "I often feel led to pray for others, even for long periods.",
+        "I’m concerned about the spiritual growth of those around me.",
+        "I naturally uplift others who are discouraged or unsure.",
+        "I’ve prayed for people and seen them emotionally or physically healed.",
+        "I enjoy pioneering new ministries or reaching unreached people.",
+        "I enjoy managing projects and keeping people on track.",
+        "I have spoken in a spiritual language not understood by others.",
+        "I can understand and explain messages spoken in tongues.",
+        "I stand firm in my faith even in hostile or public settings.",
+        "I prepare lessons that help people grow in their faith.",
+        "I look for ways to bring spiritual truth into everyday conversations.",
+        "I cry or feel deeply moved when others are in pain.",
+        "I often give above my tithe when I see a need.",
+        "I influence others toward a vision in ministry.",
+        "I can distinguish between truth and error without visible signs.",
+        "I’ve had dreams, impressions, or messages that turned out accurate.",
+        "I take personal responsibility for the spiritual welfare of others.",
+        "I write or speak encouraging words that impact others deeply."
+    ]
 
     gift_to_fivefold = {
         "Teaching": "Teacher",
@@ -117,23 +143,20 @@ elif tool == "🧪 Spiritual Gifts Assessment":
     st.caption("Answer each question on a scale from 1 (Strongly Disagree) to 5 (Strongly Agree).")
 
     with st.form("gift_assessment_form"):
-    responses = [st.slider(f"{i+1}. {q}", 1, 5, 3) for i, q in enumerate(questions)]
-    submitted = st.form_submit_button("🎯 Discover My Spiritual Gift")
+        responses = [st.slider(f"{i+1}. {q}", 1, 5, 3) for i, q in enumerate(questions)]
+        submitted = st.form_submit_button("🎯 Discover My Spiritual Gift")
 
-    import numpy as np
+    if submitted:
+        try:
+            input_data = np.array(responses).reshape(1, -1)
+            prediction = model.predict(input_data)[0]
+            role = gift_to_fivefold.get(prediction, "Undetermined")
 
-if submitted:
-    try:
-        input_data = np.array(responses).reshape(1, -1)  # ✅ Correct shape: (1, 30)
-        prediction = model.predict(input_data)[0]
+            st.success(f"🧠 Your dominant spiritual gift is: **{prediction}**")
+            st.info(f"👑 Fivefold Ministry Role: **{role}**")
+            st.markdown("✝️ *'So Christ himself gave the apostles, the prophets, the evangelists, the pastors and teachers...' – Ephesians 4:11*")
 
-        role = gift_to_fivefold.get(prediction, "Undetermined")
-
-        st.success(f"🧠 Your dominant spiritual gift is: **{prediction}**")
-        st.info(f"👑 Fivefold Ministry Role: **{role}**")
-        st.markdown("✝️ *'So Christ himself gave the apostles, the prophets, the evangelists, the pastors and teachers...' – Ephesians 4:11*")
-
-        summary_text = f"""
+            summary_text = f"""
 ==============================
 🎁 Spiritual Gifts Assessment
 ==============================
@@ -141,7 +164,7 @@ Dominant Gift: {prediction}
 Fivefold Role: {role}
 Thank you for using the Tukuza Yesu Toolkit!
 """
-        st.download_button("📥 Download My Result", data=summary_text, file_name="gift_result.txt", mime="text/plain")
+            st.download_button("📥 Download My Result", data=summary_text, file_name="gift_result.txt", mime="text/plain")
 
-    except Exception as e:
-        st.error(f"⚠️ Error during prediction: {e}")
+        except Exception as e:
+            st.error(f"⚠️ Error during prediction: {e}")
