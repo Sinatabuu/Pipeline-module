@@ -2,6 +2,8 @@ import streamlit as st
 import openai
 import os
 import joblib
+import numpy as np
+
 
 # ---------------------------
 # App Config
@@ -115,18 +117,22 @@ elif tool == "🧪 Spiritual Gifts Assessment":
     st.caption("Answer each question on a scale from 1 (Strongly Disagree) to 5 (Strongly Agree).")
 
     with st.form("gift_assessment_form"):
-        responses = [st.slider(f"{i+1}. {q}", 1, 5, 3) for i, q in enumerate(questions)]
-        submitted = st.form_submit_button("🎯 Discover My Spiritual Gift")
+    responses = [st.slider(f"{i+1}. {q}", 1, 5, 3) for i, q in enumerate(questions)]
+    submitted = st.form_submit_button("🎯 Discover My Spiritual Gift")
 
-    if submitted:
-        prediction = model.predict([responses])[0]
+    import numpy as np
+
+if submitted:
+    try:
+        input_data = np.array(responses).reshape(1, -1)  # ✅ Correct shape: (1, 30)
+        prediction = model.predict(input_data)[0]
+
         role = gift_to_fivefold.get(prediction, "Undetermined")
 
         st.success(f"🧠 Your dominant spiritual gift is: **{prediction}**")
         st.info(f"👑 Fivefold Ministry Role: **{role}**")
-        st.markdown("✝️ *'So Christ himself gave the apostles, the prophets, the evangelists, the pastors and teachers...' – Eph 4:11*")
+        st.markdown("✝️ *'So Christ himself gave the apostles, the prophets, the evangelists, the pastors and teachers...' – Ephesians 4:11*")
 
-        # Download button
         summary_text = f"""
 ==============================
 🎁 Spiritual Gifts Assessment
@@ -136,3 +142,6 @@ Fivefold Role: {role}
 Thank you for using the Tukuza Yesu Toolkit!
 """
         st.download_button("📥 Download My Result", data=summary_text, file_name="gift_result.txt", mime="text/plain")
+
+    except Exception as e:
+        st.error(f"⚠️ Error during prediction: {e}")
