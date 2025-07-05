@@ -73,6 +73,26 @@ if submitted:
     try:
         prediction = model.predict([responses])[0]
         role = gift_to_fivefold.get(prediction, "Undetermined")
+        # --- Prepare result summary text ---
+        summary_text = f"""
+==============================
+🎁 Spiritual Gifts Assessment
+==============================
+
+Dominant Spiritual Gift: {prediction}
+Fivefold Ministry Role: {role}
+
+Thank you for taking the Spiritual Gifts Assessment!
+Keep growing in grace and serving with love.
+"""
+
+        # --- Download button ---
+        st.download_button(
+            label="📥 Download My Result",
+            data=summary_text,
+            file_name="spiritual_gift_result.txt",
+            mime="text/plain"
+        )
 
         # Results Section
         st.success(f"🧠 Your dominant spiritual gift is: **{prediction}**")
